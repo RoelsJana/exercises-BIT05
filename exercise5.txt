@@ -1,0 +1,79 @@
+EXERCISE 5 #####################################################################
+
+$ mysql
+> CREATE DATABASE vacation;
+> SHOW DATABASES;
+> exit
+$ mysql vacation < vacation.sql
+$ mysql
+> USE vacation
+> SHOW tables;
+
+
+
+• List the names and addresses of all guests in London, alphabetically ordered by name.
+          SELECT * FROM guest LIMIT 5;
+          SELECT guestname, guestaddress FROM guest WHERE guestaddress like '%London';
+          
+• List all double or family rooms with a price below £40.00 per night, cheapest first.
+          SELECT * FROM room LIMIT 5;
+          SELECT type, price FROM room WHERE type like 'double' OR type like 'family';
+          SELECT type, price FROM room WHERE price < 40 ORDER BY price ASC;
+          SELECT type, price FROM room WHERE price < 40 AND type like 'double' OR price < 40 AND type like 'family' ORDER BY price ASC;        
+          
+• List the bookings for which no date_to has been specified.
+          SELECT * FROM booking LIMIT 5;
+          SELECT * FROM booking WHERE dateto IS NULL;
+          
+• What is the average price of a room?
+          select * from room limit 5;
+          select avg(price) from room;       
+          
+• What is the total revenue per night from all double rooms?
+          select * from room limit 5;
+          select sum(price) from room where type like 'double';
+          
+• How many different guests have made bookings for August?
+          SELECT * FROM booking LIMIT 5;
+          select count(guestno) from booking where datefrom like '%08%';
+
+• List the price and type of all rooms at the The Tower Hotel.
+          select * from hotel limit 5;
+          select * from room limit 5;
+          select * from hotel JOIN room ON hotel.hotelno=room.hotelno;
+          select type, price, hotelname from hotel JOIN room ON hotel.hotelno=room.hotelno WHERE hotelname like 'The Tower Hotel';        
+
+• List all guests currently staying at the The Tower Hotel.
+          select * from guest limit 5;
+          select * from booking limit 5;
+          select * from hotel limit 5;
+          select * from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN guest ON booking.guestno=guest.guestno;
+          select * from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN guest ON booking.guestno=guest.guestno WHERE curdate() between datefrom AND dateto;
+
+• List the details of all rooms at the The Tower Hotel, including the name of the guest
+staying in the room, if the room is occupied.
+          select * from booking limit 5;
+          select * from hotel limit 5;
+          select * from guest limit 5;
+          select hotelname, datefrom, dateto, guestname from hotel join booking ON hotel.hotelno = booking.hotelno JOIN guest ON booking.guestno=guest.guestno WHERE hotelname like 'The Tower Hotel' AND curdate() between datefrom and dateto;
+          
+• What is the total income from bookings for the The Tower Hotel today?
+          select * from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room ON room.hotelno=hotel.hotelno;
+          select * from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room ON room.hotelno=hotel.hotelno WHERE hotelname like 'The Tower Hotel' AND curdate() > datefrom;
+          select sum(datediff(dateto, datefrom)*price) from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room ON room.hotelno=hotel.hotelno WHERE hotelname like 'The Tower Hotel' AND curdate() > datefrom;
+               
+• List the rooms that are currently unoccupied at the The Tower Hotel.
+          select hotelname, roomno from hotel JOIN booking ON hotel.hotelno=booking.hotIN guest ON booking.guestno=guest.guestno WHERE curdate() not between datefrom AND dateto AND hotelname like 'The Tower Hotel';
+
+• What is the lost income from unoccupied rooms at the The Tower Hotel? 
+          select * from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN guest ON booking.guestno=guest.guestno WHERE curdate() not between datefrom AND dateto AND hotelname like 'The Tower Hotel';
+          select sum(price) from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room ON booking.roomno=room.roomno WHERE curdate() not between datefrom AND dateto AND hotelname like 'The Tower Hotel';
+          
+• List the number of rooms in each hotel in London.
+          select room.roomno as roomno1, city from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room ON room.hotelno=hotel.hotelno WHERE city like 'London';
+          ?
+          
+• What is the most commonly booked room type for each hotel in London?
+          select room.type from hotel JOIN booking ON hotel.hotelno=booking.hotelno JOIN room ON room.hotelno=hotel.hotelno WHERE city like 'London' ORDER BY type desc;
+          
+• Update the price of all rooms by 5%.
