@@ -1,0 +1,43 @@
+exe 7
+
+while mongo is running (but after exit)
+mongoimport --db test --collection restaurants --file restaurants.json
+mongo
+show databases
+use test
+show tables
+
+
+
+• Display the fields restaurant_id, name, borough and cuisine for all the documents in
+the collection restaurant.
+          db.restaurants.find({},{restaurant_id:1, name:1, borough:1,cuisine:1})
+          
+• Display the second group of 5 restaurants which are in the borough Bronx.
+          db.restaurants.find({borough:"Bronx"}).limit(5).skip(5)
+
+• Find the restaurants who achieved a score more than 90.
+          ?
+          
+• Find the restaurants that do not prepare any cuisine of 'American' and their grade
+score more than 70 and latitude less than -65.754168.
+          ?
+• Find the restaurants which belong to the borough Bronx and prepared either
+American or Chinese dish.
+          db.restaurants.find({borough:"Bronx", $or:[{cuisine:"American"},{cuisine:"Chinese"}]})
+          
+• Find the restaurant Id, name, borough and cuisine for those restaurants which are not
+belonging to the borough Staten Island or Queens or Bronxor Brooklyn.
+          db.restaurants.find({borough:{$ne:"Staten Island"}})
+          ?
+          
+• Find the restaurant Id, name, borough and cuisine for those restaurants which
+achieved a score which is not more than 10.
+          ?
+
+• Find the restaurant Id, name, and grades for those restaurants which achieved a
+grade of "A" and scored 11 on an ISODate "2014-08-11T00:00:00Z" among many of
+survey dates.
+• Give a list of all restaurants, ordered by cuisine alphabetically and borough in reverse
+alphabetical order
+• Write a query to know whether all the addresses contain a street or not.
