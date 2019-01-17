@@ -1,0 +1,54 @@
+EXERCISE 3 #####################################################################
+NORMALIZE TO BCNF
+
+GEGEVEN:
+PatientNo, PatientName, WardNo, BedNo, WardName, DrugNo, DrugName, Description, Dosage, Method, Unitsperday, Startdate, finishdate
+
+UNF: put all data into 1 entity, gather all info from the table
+           DB(PatientNo,PatientName,WardNo,BedNo,WardName,DrugNo,DrugName,Description,Dosage,
+               Method,Unitsperday, Startdate,finishdate)
+          
+1NF: identify the keys / are there repeating groups?
+          there are no repeating groups
+          DB(PatientNo,PatientName,WardNo,BedNo,WardName,DrugNo,DrugName,Description,Dosage,
+               Method,Unitsperday, Startdate,finishdate)  
+          candidate keys: PatientNo, DrugNo, Startdate (with these 3 you can retreve all data)
+                     
+2NF: check if every non-primary is fully depened on the full primary key
+          patient(PatientNo,PatientName,WardNo,BedNo,WardName,DrugNo)
+          drugs(DrugNo, DrugName,Description,Dosage,Method,Startdate,finishdate) 
+          units(Unitsperday)
+          candidate keys: PatientNo / DrugNo, Startdate
+          
+3NF: check if every attribute that is not part of a key is not dependend on a non key attribute
+          patient(PatientNo,PatientName,DrugNo)
+          ward(PatientNo,WardNo,BedNo,WardName)
+          drugs(DrugNo, DrugName,Description,Dosage,Method,Unitsperday, Startdate,finishdate)
+          candidate keys: PatientNo / PatientNo, ward / DrugNo, Startdate  
+          
+BCNF: every part  of relationship should be candidate key
+          = 3NF     
+
+
+
+############################OPLOSSING############################################
+
+UNF
+	DB (patientNo, FullName, WardNumber, BedNo, WardName, DrugNo, Name, Description, dosage, MethodAdmin, UnitsDay, StartDate, FinishDate)
+1NF (keys: patientNo, DrugNo, StartDate)
+	DB (patientNo, FullName, WardNumber, BedNo, WardName, DrugNo, Name, Description, dosage, MethodAdmin, UnitsDay, StartDate, FinishDate)
+
+2NF ( keys: patientNo --  DrugNo – PatientNo, DrugNo, StartDate)
+	Patient(patientNo, FullName, WardNumber, BedNo, WardName)
+	Drug(DrugNo, Name, Description, dosage, MethodAdmin)
+	Units(PatientNo, DrugNo, UnitsDay, StartDate, FinishDate)
+
+3NF (FullName is dependent on PatienNo, WardName is dependent on WardNo, keys: patientNo --WardNo – DrugNo – PatientNo, DrugNo, StartDate)
+	Patient(patientNo, FullName, WardNo )
+	Ward(WardNo, WardName, BedNo)
+	Drug(DrugNo, Name, Description, dosage, MethodAdmin)
+	Units(PatientNo, DrugNo, UnitsDay, StartDate, FinishDate)
+
+BCNF = 3NF
+
+################################################################################
