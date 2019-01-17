@@ -1,0 +1,35 @@
+EXERCISE 2 #####################################################################
+NORMALIZE TO BCNF
+
+GEGEVEN:
+StaffNO   dentistName    patientNo patientName    appointment date    appointment time    SurgeryNo
+
+UNF: put all data into 1 entity, gather all info from the table
+          DB(StaffNO,dentistName,patientNo,patientName,appointment(date,time),SurgeryNo)
+          
+1NF: identify the (primary)keys / are there repeating groups?
+          Repeating groups > YES (appointment) it contains date and time
+          DB(StaffNO,apptDate,apptTime,dentistName,patientNo,patientName,SurgeryNo)
+          Candidate Keys: staffNo + apptDate + apptTime
+          
+2NF: check if every non-primary is fully depened on the full primary key
+          appointment(staffNo,apptDate,apptTime,patientNo,patientName)
+          surgery(staffNo,apptDate,SurgeryNo) 
+          dentist(StaffNO, dentistName)
+          candidate Keys: staffNo + apptDate + apptTime / StaffNO + apptDate / StaffNO 
+          
+3NF: check if every attribute that is not part of a key is not dependend on a non key attribute
+          appointment(staffNo,apptDate,apptTime,patientNo)
+          patient(patientNo,patientName)
+          surgery(staffNo,apptDate,SurgeryNo) 
+          dentist(StaffNO, dentistName) 
+          candidate Keys: staffNo + apptDate + apptTime / patientNo / StaffNO + apptDate / StaffNO
+               patient would be linked with appointment with a foreign key 
+                    but this isn't mentioned with normalisation
+          
+BCNF: every part of the relationship should be canditate key
+          = 3NF
+          none of the key attributes provides facts about another key attribute 
+               within the same table, exept the entire primary key       
+
+################################################################################
