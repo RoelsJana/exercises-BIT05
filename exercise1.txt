@@ -1,0 +1,10 @@
+EXERCISE 1 #####################################################################
+mkdir exercises-BIT05
+cd exercises-BIT05
+git init
+     firefox > https://github.com/ > create new repository
+git status
+gedit & > create a file
+git add filename
+git commit -m “message”
+git push origin master
